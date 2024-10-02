@@ -1,0 +1,1 @@
+function addNumbers(e,r){if("number"!=typeof e||"number"!=typeof r)throw new Error("Both arguments must be numbers");return e+r}module.exports={addNumbers:addNumbers};
