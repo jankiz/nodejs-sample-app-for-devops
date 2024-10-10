@@ -14,16 +14,16 @@ const server = http.createServer((req, res) => {
   const { pathname, query } = url.parse(req.url, true);
 
   if (pathname === '/add' && req.method === 'GET') {
-    const { num1, num2 } = query;
+    const { num_1, num_2 } = query;
 
-    if (!num1 || !num2) {
+    if (!num_1 || !num_2) {
       res.writeHead(400, { 'Content-Type': 'text/plain' });
       res.end('Please provide two numbers as query parameters: num1 and num2');
       return;
     }
 
-    const parsedNum1 = parseFloat(num1);
-    const parsedNum2 = parseFloat(num2);
+    const parsedNum1 = parseFloat(num_1);
+    const parsedNum2 = parseFloat(num_2);
 
     if (isNaN(parsedNum1) || isNaN(parsedNum2)) {
       res.writeHead(400, { 'Content-Type': 'text/plain' });
