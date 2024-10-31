@@ -73,22 +73,26 @@ const server = http.createServer(async (req, res) => {
 
   // Add metrics endpoint
   if (pathname === '/metrics' && req.method === 'GET') {
+    console.log('/metrics endpoint called.');
     res.setHeader('Content-Type', register.contentType);
     try {
       const metrics = await register.metrics();
       res.writeHead(200);
       res.end(metrics);
+      console.log('metrics set correctly');
       endTimer(200);
       return;
     } catch (error) {
       res.writeHead(500);
       res.end('Error collecting metrics');
+      console.error('error occured while collecting metrics');
       endTimer(500);
       return;
     }
   }
 
   if (pathname === '/add' && req.method === 'GET') {
+    console.log('/add endpoint called.');
     const { num1, num2 } = query;
     
     if (!num1 || !num2) {
@@ -96,6 +100,7 @@ const server = http.createServer(async (req, res) => {
       res.end('Please provide two numbers as query parameters: num1 and num2');
       calculationErrors.labels('missing_parameters').inc();
       endTimer(400);
+      console.error('bad query parameters at /add endpoint');
       return;
     }
 
@@ -107,6 +112,7 @@ const server = http.createServer(async (req, res) => {
       res.end('Both query parameters must be valid numbers.');
       calculationErrors.labels('invalid_number').inc();
       endTimer(400);
+      console.error('no valid numbers at /add endpoint');
       return;
     }
 
@@ -116,6 +122,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'text/plain' });
       res.end(`The sum of ${parsedNum1} and ${parsedNum2} is ${sum}`);
       endTimer(200);
+      console.log(`The sum of ${parsedNum1} and ${parsedNum2} is ${sum}`);
     } catch (error) {
       calculationErrors.labels('calculation_error').inc();
       res.writeHead(500, { 'Content-Type': 'text/plain' });
